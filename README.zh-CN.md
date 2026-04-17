@@ -83,4 +83,5 @@ VCDDD 的核心判断是：
 
 ## 许可证
 
-本仓库使用 MIT License。
+本仓库使用 Creative Commons Attribution 4.0 International（`CC BY
+4.0`）许可证。
