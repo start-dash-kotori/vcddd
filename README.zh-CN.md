@@ -16,16 +16,17 @@ VCDDD（Vibe Coding Domain-Driven Design）是一套面向 AI 辅助开发的软
 ## 目录结构
 
 ```text
-vcddd/
-├── SKILL.md
+vcddd/                     ← 仓库根目录
 ├── README.md
 ├── README.zh-CN.md
 ├── .gitignore
 ├── LICENSE
-└── reference/
-    ├── methodology/
-    ├── thinking/
-    └── coding/
+└── vcddd/                 ← skill 根目录（SKILL.md 就在这里）
+    ├── SKILL.md
+    └── reference/
+        ├── methodology/
+        ├── thinking/
+        └── coding/
 ```
 
 ## VCDDD 的双层含义

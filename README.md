@@ -16,16 +16,17 @@ This repository is published as a single-skill repository. The repository root i
 ## Repository Structure
 
 ```text
-vcddd/
-├── SKILL.md
+vcddd/                     ← repository root
 ├── README.md
 ├── README.zh-CN.md
 ├── .gitignore
 ├── LICENSE
-└── reference/
-    ├── methodology/
-    ├── thinking/
-    └── coding/
+└── vcddd/                 ← skill root (SKILL.md lives here)
+    ├── SKILL.md
+    └── reference/
+        ├── methodology/
+        ├── thinking/
+        └── coding/
 ```
 
 ## Two Layers of VCDDD
