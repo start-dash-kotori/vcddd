@@ -4,6 +4,8 @@
 
 VCDDD (Vibe Coding Domain-Driven Design) is a skill and methodology for AI-assisted software design. It carries two layers of meaning that are complementary, not alternative.
 
+> **New here?** → [Quick Start Guide](./QUICKSTART.md) — no DDD knowledge needed, just follow the steps.
+
 This repository is published as a single-skill repository. The repository root is the skill root.
 
 ## What Is Included

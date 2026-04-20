@@ -4,6 +4,8 @@
 
 VCDDD（Vibe Coding Domain-Driven Design）是一套面向 AI 辅助开发的软件设计 skill 与方法论，同时承载两层相互支撑的含义。
 
+> **第一次用？** → [快速上手指南](./QUICKSTART.zh-CN.md) — 不需要了解 DDD，跟着步骤走就能用。
+
 本仓库采用“单 skill 独立仓库”结构，仓库根目录就是 skill 根目录。
 
 ## 仓库包含内容
