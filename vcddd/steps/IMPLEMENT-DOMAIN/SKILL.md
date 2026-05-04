@@ -38,16 +38,15 @@ server/{domain}/
 
 ## 完成要求
 
-1. **先写全部测试（RED）**：在写任何实现代码之前，先写白盒测试 + 黑盒测试，运行确认全部失败
-2. **再写最小代码通过（GREEN）**：逐个组件实现，每实现一个运行相关测试直到通过
-3. **重构优化（REFACTOR）**：消除重复、优化命名，运行全部测试确认仍然通过
-4. **覆盖率验证**：逐条核对 test-spec.md，确认每个测试 ID 都有对应测试函数
+1. **Phase 1**：实现全部领域代码（聚合、命令、事件、仓储、读模型、事件消费）
+2. **Phase 2**：基于 test-spec.md 编写黑盒测试（每个 ID 对应一个测试函数）+ 白盒测试（分支覆盖 + 边界 + 异常）
+3. **Phase 3**：运行全部测试，确认全部通过；如有失败则修复后重跑
+4. **Phase 4**：覆盖率自检——逐条核对 test-spec.md，确认每个 ID 都有对应测试
 5. 命名与 business.md 通用语言词表一致
-6. 全部测试通过
-7. 在 progress.log 中记录操作（含 RED/GREEN/REFACTOR 各阶段结果）
-8. **报告状态**：DONE / DONE_WITH_CONCERNS / BLOCKED
+6. 在 progress.log 中记录操作
+7. **报告状态**：DONE / DONE_WITH_CONCERNS / BLOCKED
 
-**TDD 强制要求**：不允许先写代码后补测试。必须先写测试确认失败，再写代码使测试通过。
+**测试由 Reviewer 运行和验证**：Implementer 完成代码+测试后，Reviewer 会运行全部测试，发现失败后作为反馈要求 Implementer 修复。
 
 ## 完成后的控制器行为
 

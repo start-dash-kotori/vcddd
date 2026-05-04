@@ -31,36 +31,33 @@ description: VCDDD — 三层对抗审查 + 测试验证
 ```
 ┌─ 审查循环开始 ──────────────────────────────────────────┐
 │                                                         │
-│  1. 运行全部测试（白盒 + 黑盒）                          │
-│     → 全部通过 → 继续 Step 2                            │
-│     → 有失败 → 立即派遣 Implementer 修复                 │
-│       → 修复后重新运行全部测试                            │
-│       → 循环直到全部通过                                  │
-│                                                         │
-│  2. 【立即】派遣 Spec Reviewer                           │
-│     → 传入：business.md + boundary.md + 全部代码         │
+│  1. 【立即】派遣 Spec Reviewer                           │
+│     → 使用 SuperPower spec compliance reviewer          │
+│     → 传入：business.md + boundary.md + 全部代码 + 测试  │
+│     → Reviewer 运行全部测试（白盒 + 黑盒）               │
 │     → 核对代码 vs business.md（Stage 1）                 │
-│     → 一次性给出全部问题                                 │
+│     → 一次性给出全部问题（含测试失败信息）                │
 │     → 返回：PASS / ISSUES                               │
 │                                                         │
-│  3. Spec Reviewer 返回 ISSUES 后【立即】：               │
-│     → 重新派遣 Implementer，传入问题列表                 │
-│     → Implementer 修复后重新提交                         │
-│     → 重新运行全部测试（确认修复未引入新问题）             │
-│     → 重新派遣 Spec Reviewer 审查                        │
+│  2. Spec Reviewer 返回 ISSUES 后【立即】：               │
+│     → 重新派遣 Implementer，传入问题列表 + 失败测试信息  │
+│     → Implementer 修复后重新提交代码 + 测试              │
+│     → 重新派遣 Spec Reviewer（Reviewer 重新运行测试）     │
 │     → 循环直到 PASS 或达到 10 轮上限                     │
 │                                                         │
-│  4. Spec Reviewer 返回 PASS 后【立即】派遣 Quality Reviewer│
-│     → 传入：tech-stack.md + 全部代码                     │
+│  3. Spec Reviewer 返回 PASS 后【立即】派遣 Quality Reviewer│
+│     → 使用 SuperPower code quality reviewer             │
+│     → 传入：tech-stack.md + 全部代码 + 测试              │
+│     → Reviewer 运行全部测试（确认测试仍然通过）           │
 │     → 核对代码 vs tech-stack.md（Stage 2）               │
 │     → 一次性给出全部问题                                 │
 │     → 返回：PASS / ISSUES                               │
 │                                                         │
-│  5. Quality Reviewer 返回 ISSUES 后【立即】：             │
-│     → 重新派遣 Implementer 修复                          │
-│     → 重新运行全部测试                                   │
-│     → 重新派遣 Spec Reviewer（确认修复未引入新问题）       │
-│     → 重新派遣 Quality Reviewer                          │
+│  4. Quality Reviewer 返回 ISSUES 后【立即】：             │
+│     → 重新派遣 Implementer，传入问题列表                  │
+│     → Implementer 修复后重新提交代码 + 测试               │
+│     → 重新派遣 Spec Reviewer（Reviewer 重跑测试+审查）    │
+│     → 重新派遣 Quality Reviewer（Reviewer 重跑测试+审查） │
 │     → 循环直到 PASS 或达到 10 轮上限                     │
 │                                                         │
 │  6. Quality Reviewer 返回 PASS 后【立即】派遣 VCDDD Reviewer│
@@ -82,6 +79,8 @@ description: VCDDD — 三层对抗审查 + 测试验证
 - **审查不可跳过**：Implementer 返回 DONE 不等于域完成，必须通过三道审查才算完成
 - **审查不可省略**：不能因为"代码看起来没问题"就跳过任何一道 Reviewer
 - **审查不可并行**：Spec → Quality → VCDDD 必须串行
+- **测试由 Reviewer 运行**：Reviewer 是运行测试的一方，不是 Implementer
+- **使用 SuperPower reviewer**：Spec Reviewer 使用 SuperPower spec compliance reviewer，Quality Reviewer 使用 SuperPower code quality reviewer
 - **修复后必须重审**：Implementer 修复后，必须从 Spec Reviewer 重新开始
 - **不需要用户提醒**：整个循环是自动的
 
