@@ -102,6 +102,54 @@ repositories/order_repository.{ext}
 
 ---
 
+### 基础设施代码的边界（强制，不随技术栈变化）
+
+**基础设施层只提供连接器和通用工具，不包含任何域的业务 schema。**
+
+这是最容易违反的边界之一。AI 在生成基础设施代码时，可能会把数据库表定义、仓储实现等业务相关内容也写进 infrastructure 目录。这是明确禁止的。
+
+**infrastructure/ 目录允许包含**：
+
+- 数据库连接器 / 连接池（如空壳 AppDatabase，`@DriftDatabase(tables: [])`）
+- 外部服务适配器（如 AI 推理通道、支付网关封装）
+- 通用 IO 工具（如文件读写辅助）
+
+**infrastructure/ 目录禁止包含**：
+
+- 任何域的表定义（`table.dart`、`schema.prisma`、`models.py` 中的 ORM 模型等）
+- 任何域的仓储实现（`repository`、`dao`、`mapper`）
+- 任何业务逻辑或业务判断
+
+**表定义属于域层**，因为表结构是业务真相的一部分——字段、约束、索引反映的是业务不变式，不是技术细节。表定义放在 `server/{domain}/table.dart`（或该技术栈的等价位置）。
+
+**典型错误示例**：
+
+```
+# 错误：表定义放在了 infrastructure
+infrastructure/
+├── database/
+│   ├── app_database.dart
+│   └── models/
+│       ├── transactions.dart    ← 禁止！表定义属于域层
+│       └── accounts.dart        ← 禁止！表定义属于域层
+
+# 正确：表定义在域内部
+server/
+├── transaction/
+│   ├── table.dart               ← 表定义在域内
+│   └── drift_repository.dart    ← 仓储实现在域内
+├── account/
+│   ├── table.dart
+│   └── drift_repository.dart
+infrastructure/
+└── database/
+    └── app_database.dart        ← 只有连接器，tables: []
+```
+
+这条原则写入 `tech-stack.md` 的"架构原则"部分，后续每个域的实现必须对照执行。审查时（Stage 3 VCDDD Reviewer）必须检查此边界是否被遵守。
+
+---
+
 ### 日志规范（强制，不随技术栈变化）
 
 **格式**：所有环境统一使用结构化 JSON 日志，不用拼接字符串的纯文本日志。

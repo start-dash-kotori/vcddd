@@ -197,6 +197,50 @@ D2-auto 不依赖 SuperPower，始终使用 VCDDD 自身的流程。
 
 ---
 
+## D2.5-auto：项目骨架生成（SCAFFOLD）
+
+tech-stack.md 写入完成后、D3-auto 开始前，执行骨架生成。
+
+### 流程
+
+```
+tech-stack.md 写入完成
+        │
+        ▼
+[VCDDD] 加载 steps/SCAFFOLD/SKILL.md
+        │
+        ▼
+[VCDDD] 根据 tech-stack.md 技术栈，查找 reference/samples/ 下的样板代码
+        │
+        ├── 有匹配样板 → 复制并替换占位符
+        └── 无匹配样板 → 从零生成骨架（严格遵循 tech-stack.md 架构原则）
+        │
+        ▼
+[VCDDD] 生成骨架代码：
+        ├── server/shared/    域共享基础设施（纯语言，不依赖框架）
+        ├── infrastructure/   基础设施连接器（空壳，不含任何域 schema）
+        ├── app/              框架适配层骨架
+        └── 依赖清单          pubspec / package.json / go.mod 等
+        │
+        ▼
+[VCDDD] 验证骨架：
+        ├── infrastructure 不含域逻辑 ✓
+        ├── server/shared/ 无框架依赖 ✓
+        ├── 依赖方向正确 ✓
+        └── 编译/构建通过 ✓
+        │
+        ▼
+继续 D3-auto
+```
+
+### 禁止性规则
+
+- **infrastructure/ 目录禁止包含任何域的表定义或仓储实现**
+- server/shared/ 禁止 import 框架包
+- 骨架验证不通过 → 不进入 D3-auto
+
+---
+
 ## D3-auto：Subagent 编排实现
 
 ### SuperPower 引擎路径（VCDDD_EXEC_ENGINE=superpower）
@@ -216,7 +260,7 @@ VCDDD 负责**准备上下文**，SuperPower 负责**执行**。分工如下：
 #### 流程
 
 ```
-tech-stack.md 就绪
+tech-stack.md 就绪 + 骨架代码已生成（D2.5-auto）
         │
         ▼
 [VCDDD] Step 1: 构建域依赖图 + 拓扑排序
@@ -348,6 +392,7 @@ tech-stack.md（全文）
    - tech-stack.md 中关于域层与框架层分离的规定是否被遵守
    - 每个域是否保持了模块完整性（含数据访问实现）
    - 框架适配层是否没有混入业务逻辑
+   - **基础设施边界：infrastructure/ 目录是否只包含连接器，不含任何域的表定义、仓储实现或业务逻辑**
 
 3. VCDDD 专项要求
    - 事务边界是否与聚合边界对齐（一个事务不修改多个聚合）
